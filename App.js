@@ -2,18 +2,28 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import ajax from './src/ajax'
+import DealList from './src/DealList';
 
 
 
 class App extends React.Component {
-  // async componentDidMount() {
-  //   const deals = await ajax.fetchInitialDeals();
-  //   console.log(deals);
-  // }
+  async componentDidMount() {
+    state = {
+      deals: [],
+    };
+    const deals = await ajax.fetchInitialDeals();
+    this.setState((prevState) => {
+      return { deals} ;
+    });
+  }
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.header}>Bakesale</Text>
+        {
+          this.state.deals.length > 0
+          ? <DealList deals={this.state.deals} />
+          : <Text style={styles.header}>Bakesale</Text>
+        }
       </View>
     );
   }
